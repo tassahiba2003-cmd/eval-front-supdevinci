@@ -10,6 +10,7 @@ export const UserList = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [sortCriteria, setSortCriteria] = useState<string>("default"); 
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -50,6 +51,21 @@ export const UserList = () => {
     });
   }, [users, searchQuery]);
 
+  const sortedAndFilteredUsers = useMemo(() => {
+    const usersToSort = [...filteredUsers];
+
+    if (sortCriteria === 'name') {
+      usersToSort.sort((a, b) => a.lastName.localeCompare(b.lastName));
+    } else if (sortCriteria === 'age') {
+      usersToSort.sort((a, b) => a.age - b.age);
+    }
+
+    return usersToSort;
+  }, [filteredUsers, sortCriteria]); 
+
+
+
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -66,12 +82,30 @@ export const UserList = () => {
         query={searchQuery}
         onQueryChange={setSearchQuery} 
       />
+
+              <div className="sort-container">
+          <label htmlFor="sort-select">Trier par :</label>
+          <select 
+            id="sort-select"
+            className="sort-select"
+            value={sortCriteria}
+            onChange={(e) => setSortCriteria(e.target.value)}
+          >
+            <option value="default">Par défaut</option>
+            <option value="name">Nom (A-Z)</option>
+            <option value="age">Âge (Croissant)</option>
+          </select>
+        </div>
+            
+      
       <div className="user-grid">
-        {filteredUsers.map((user) => (
+        {sortedAndFilteredUsers.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}
       </div>
-       {filteredUsers.length === 0 && (
+
+      {/* On base le "aucun résultat" sur la liste finale */}
+      {sortedAndFilteredUsers.length === 0 && (
         <p className="no-results-text">
           Aucun utilisateur trouvé pour "{searchQuery}"
         </p>
