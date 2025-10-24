@@ -1,0 +1,39 @@
+/* src/component/Pagination.css */
+/* Styles pour le conteneur et les boutons de pagination */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur petit écran */
+  gap: 0.5rem; /* Espace plus serré pour les boutons numérotés */
+  margin-top: 2.5rem;
+}
+
+.pagination-button {
+  padding: 8px 14px; /* Un peu plus "carré" */
+  min-width: 40px; /* Largeur minimum pour un look uniforme */
+  font-size: 0.9rem;
+  font-weight: 600;
+  
+  /* Look dark mode */
+  background-color: #3a3a3a;
+  color: #f1f1f1;
+  border: 1px solid #555;
+  border-radius: 6px;
+  
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #4a4a4a;
+  border-color: #777;
+}
+
+.pagination-button:disabled {
+  background-color: #4a4a4a; 
+  border-color: #777;
+  color: #f1f1f1;
+  cursor: default;
+}
